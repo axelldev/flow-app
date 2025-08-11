@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "flow-app",
+    "name": "flowapp",
     "slug": "flow-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.axelldev.flowapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -34,10 +38,18 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-dev-client"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "76ea025e-5c38-4051-8898-fb16706c1579"
+      }
+    },
+    "owner": "axelldev"
   }
 }
