@@ -36,3 +36,5 @@ export const flowItems = sqliteTable("flow_items", {
     sql`(unixepoch('now')*1000)`
   ),
 });
+
+export type Flow = typeof flows.$inferInsert;

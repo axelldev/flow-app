@@ -1,9 +1,8 @@
 import migrations from "@/drizzle/migrations";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { Stack } from "expo-router";
+import { Slot } from "expo-router";
 import { openDatabaseSync, SQLiteProvider } from "expo-sqlite";
 import { Suspense } from "react";
 import { ActivityIndicator } from "react-native";
@@ -15,8 +14,12 @@ export default function RootLayout() {
   const db = drizzle(expoDb);
   useDrizzleStudio(expoDb);
   const { success, error } = useMigrations(db, migrations);
-  const headerBackgroundColor = useThemeColor({}, "background");
-  const headerTintColor = useThemeColor({}, "text");
+
+  if (error) {
+    console.error("Migration error:", error);
+  } else if (success) {
+    console.log("Migrations completed successfully");
+  }
 
   return (
     <Suspense fallback={<ActivityIndicator size="large" />}>
@@ -24,14 +27,7 @@ export default function RootLayout() {
         databaseName={DATABASE_NAME}
         options={{ enableChangeListener: true }}
       >
-        <Stack
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: headerBackgroundColor,
-            },
-            headerTintColor: headerTintColor,
-          }}
-        />
+        <Slot />
       </SQLiteProvider>
     </Suspense>
   );
