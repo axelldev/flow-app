@@ -1,8 +1,8 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
-import { Tabs } from "expo-router";
+import { useThemeColor } from "@/hooks/useThemeColor"
+import { Tabs } from "expo-router"
 
 export default function TabsLayout() {
-  const tabBarBackground = useThemeColor({}, "background");
+  const tabBarBackground = useThemeColor({}, "background")
   return (
     <Tabs
       screenOptions={{
@@ -27,5 +27,5 @@ export default function TabsLayout() {
         }}
       />
     </Tabs>
-  );
+  )
 }

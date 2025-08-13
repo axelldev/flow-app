@@ -1,5 +1,5 @@
-import { sql } from "drizzle-orm";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm"
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 
 export const flows = sqliteTable("flows", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -8,12 +8,12 @@ export const flows = sqliteTable("flows", {
   icon: text("icon"),
   color: text("color"),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).default(
-    sql`(unixepoch('now')*1000)`
+    sql`(unixepoch('now')*1000)`,
   ),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" }).default(
-    sql`(unixepoch('now')*1000)`
+    sql`(unixepoch('now')*1000)`,
   ),
-});
+})
 
 export const flowItems = sqliteTable("flow_items", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -30,11 +30,11 @@ export const flowItems = sqliteTable("flow_items", {
   activeTimeMs: integer("active_time_ms").notNull().default(0),
   startedAt: integer("started_at", { mode: "timestamp_ms" }),
   createdAt: integer("created_at", { mode: "timestamp_ms" }).default(
-    sql`(unixepoch('now')*1000)`
+    sql`(unixepoch('now')*1000)`,
   ),
   updatedAt: integer("updated_at", { mode: "timestamp_ms" }).default(
-    sql`(unixepoch('now')*1000)`
+    sql`(unixepoch('now')*1000)`,
   ),
-});
+})
 
-export type Flow = typeof flows.$inferInsert;
+export type Flow = typeof flows.$inferInsert

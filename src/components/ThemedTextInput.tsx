@@ -1,25 +1,25 @@
-import React, { forwardRef } from "react";
-import { StyleSheet, TextInput, type TextInputProps } from "react-native";
+import React, { forwardRef } from "react"
+import { StyleSheet, TextInput, type TextInputProps } from "react-native"
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/hooks/useThemeColor"
 
 export type ThemedTextInputProps = TextInputProps & {
   // Text color overrides
-  lightColor?: string;
-  darkColor?: string;
+  lightColor?: string
+  darkColor?: string
 
   // Background color overrides
-  lightBackgroundColor?: string;
-  darkBackgroundColor?: string;
+  lightBackgroundColor?: string
+  darkBackgroundColor?: string
 
   // Placeholder color overrides
-  lightPlaceholderColor?: string;
-  darkPlaceholderColor?: string;
+  lightPlaceholderColor?: string
+  darkPlaceholderColor?: string
 
   // Border color overrides
-  lightBorderColor?: string;
-  darkBorderColor?: string;
-};
+  lightBorderColor?: string
+  darkBorderColor?: string
+}
 
 export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
   (
@@ -35,25 +35,25 @@ export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
       style,
       ...props
     },
-    ref
+    ref,
   ) => {
     const textColor = useThemeColor(
       { light: lightColor, dark: darkColor },
-      "text"
-    );
+      "text",
+    )
     const backgroundColor = useThemeColor(
       { light: lightBackgroundColor, dark: darkBackgroundColor },
-      "background"
-    );
+      "background",
+    )
     const placeholderTextColor = useThemeColor(
       { light: lightPlaceholderColor, dark: darkPlaceholderColor },
-      "icon"
-    );
+      "icon",
+    )
     const borderColor = useThemeColor(
       { light: lightBorderColor, dark: darkBorderColor },
-      "icon"
-    );
-    const selectionColor = useThemeColor({}, "tint");
+      "icon",
+    )
+    const selectionColor = useThemeColor({}, "tint")
 
     return (
       <TextInput
@@ -67,11 +67,11 @@ export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
         ]}
         {...props}
       />
-    );
-  }
-);
+    )
+  },
+)
 
-ThemedTextInput.displayName = "ThemedTextInput";
+ThemedTextInput.displayName = "ThemedTextInput"
 
 const styles = StyleSheet.create({
   input: {
@@ -81,4 +81,4 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     fontSize: 16,
   },
-});
+})
