@@ -1,16 +1,26 @@
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
+import { useFlows } from "@/hooks/useFlows"
 import { useThemeColor } from "@/hooks/useThemeColor"
 import { FlatList } from "react-native"
 
 export default function FlowsScreen() {
-  const dummyItems = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`)
   const backgroundColor = useThemeColor({}, "containerBackground")
+  const { flows } = useFlows()
 
   return (
-    <ThemedView style={{ flex: 1 }}>
+    <ThemedView safeArea style={{ flex: 1 }}>
+      <ThemedText
+        type="navTitle"
+        style={{
+          paddingHorizontal: 8,
+          paddingVertical: 16,
+        }}
+      >
+        Flows
+      </ThemedText>
       <FlatList
-        data={dummyItems}
+        data={flows}
         renderItem={({ item }) => (
           <ThemedView
             style={{
@@ -26,15 +36,12 @@ export default function FlowsScreen() {
                 fontWeight: "bold",
               }}
             >
-              {item}
+              {item?.title}
             </ThemedText>
-            <ThemedText>
-              This is a description for {item}. It can be longer to test text
-              wrapping and layout.
-            </ThemedText>
+            <ThemedText>{item?.description}</ThemedText>
           </ThemedView>
         )}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item?.id.toString()}
       />
     </ThemedView>
   )

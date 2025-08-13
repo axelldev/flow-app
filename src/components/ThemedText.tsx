@@ -4,7 +4,7 @@ import { StyleSheet, Text, TextProps } from "react-native"
 export type ThemdTextProps = TextProps & {
   lightColor?: string
   darkColor?: string
-  type?: "default" | "title" | "link"
+  type?: "default" | "title" | "link" | "navTitle"
 }
 
 export function ThemedText({
@@ -35,5 +35,9 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 16,
     color: "blue",
+  },
+  navTitle: {
+    fontSize: 32,
+    fontWeight: "bold",
   },
 })
