@@ -1,15 +1,17 @@
 import { HapticTab } from "@/components/HapticTab"
 import BlurTabBarBackground from "@/components/TabBarBackground"
-import { useThemeColor } from "@/hooks/useThemeColor"
+import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Tabs } from "expo-router"
 import { Platform } from "react-native"
 
 export default function TabsLayout() {
-  const tabBarBackground = useThemeColor({}, "background")
-  const background = useThemeColor({}, "background")
-  const textColor = useThemeColor({}, "text")
-  const borderColor = useThemeColor({}, "tabBarBorder")
+  const theme = useTheme()
+  const tabBarBackground = theme.background
+  const background = theme.background
+  const textColor = theme.text
+  const borderColor = theme.tabBarBorder
+  const primaryColor = theme.primary
 
   return (
     <Tabs
@@ -18,6 +20,7 @@ export default function TabsLayout() {
         headerShown: false,
         headerShadowVisible: false,
         headerTitleAlign: "center",
+        tabBarActiveTintColor: primaryColor,
         tabBarStyle: Platform.select({
           ios: {
             borderTopColor: borderColor,

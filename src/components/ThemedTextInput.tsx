@@ -1,59 +1,19 @@
 import React, { forwardRef } from "react"
 import { StyleSheet, TextInput, type TextInputProps } from "react-native"
 
-import { useThemeColor } from "@/hooks/useThemeColor"
+import { useTheme } from "@/hooks/useTheme"
 
-export type ThemedTextInputProps = TextInputProps & {
-  // Text color overrides
-  lightColor?: string
-  darkColor?: string
-
-  // Background color overrides
-  lightBackgroundColor?: string
-  darkBackgroundColor?: string
-
-  // Placeholder color overrides
-  lightPlaceholderColor?: string
-  darkPlaceholderColor?: string
-
-  // Border color overrides
-  lightBorderColor?: string
-  darkBorderColor?: string
-}
+export type ThemedTextInputProps = TextInputProps
 
 export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
-  (
-    {
-      lightColor,
-      darkColor,
-      lightBackgroundColor,
-      darkBackgroundColor,
-      lightPlaceholderColor,
-      darkPlaceholderColor,
-      lightBorderColor,
-      darkBorderColor,
-      style,
-      ...props
-    },
-    ref,
-  ) => {
-    const textColor = useThemeColor(
-      { light: lightColor, dark: darkColor },
-      "text",
-    )
-    const backgroundColor = useThemeColor(
-      { light: lightBackgroundColor, dark: darkBackgroundColor },
-      "background",
-    )
-    const placeholderTextColor = useThemeColor(
-      { light: lightPlaceholderColor, dark: darkPlaceholderColor },
-      "icon",
-    )
-    const borderColor = useThemeColor(
-      { light: lightBorderColor, dark: darkBorderColor },
-      "icon",
-    )
-    const selectionColor = useThemeColor({}, "tint")
+  ({ style, ...props }, ref) => {
+    const theme = useTheme()
+    const textColor = theme.text
+
+    const backgroundColor = theme.background
+    const placeholderTextColor = theme.icon
+    const borderColor = theme.icon
+    const selectionColor = theme.tint
 
     return (
       <TextInput

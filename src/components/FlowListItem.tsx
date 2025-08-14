@@ -1,13 +1,14 @@
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { Flow } from "@/db/schema"
-import { useThemeColor } from "@/hooks/useThemeColor"
+import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Pressable, StyleSheet, View } from "react-native"
 
 export function FlowListItem({ flow }: { flow: Flow }) {
-  const backgroundColor = useThemeColor({}, "containerBackground")
-  const iconColor = useThemeColor({}, "icon")
+  const theme = useTheme()
+  const backgroundColor = theme.containerBackground
+  const iconColor = theme.icon
 
   return (
     <Pressable>
