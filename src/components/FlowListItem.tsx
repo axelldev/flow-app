@@ -16,15 +16,25 @@ export function FlowListItem({ flow }: { flow: Flow }) {
         <ThemedView
           style={[
             styles.container,
-            { flexDirection: "row", alignItems: "center", backgroundColor },
-            { opacity: pressed ? 0.5 : 1 },
+            {
+              backgroundColor,
+              opacity: pressed ? 0.5 : 1,
+            },
           ]}
         >
-          <View>
-            <ThemedText style={styles.title}>{flow.title}</ThemedText>
-            <ThemedText>{flow.description}</ThemedText>
+          <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
+            <ThemedText
+              style={[styles.title, { fontSize: 24 }]}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {flow.title}
+            </ThemedText>
+            <ThemedText numberOfLines={2} ellipsizeMode="tail">
+              {flow.description}
+            </ThemedText>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <View>
             <Ionicons
               name="chevron-forward-circle-outline"
               size={28}
@@ -42,6 +52,9 @@ const styles = StyleSheet.create({
     padding: 12,
     margin: 8,
     borderRadius: 16,
+    height: 100,
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
     fontSize: 18,
