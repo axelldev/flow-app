@@ -9,21 +9,23 @@ export default function TabsLayout() {
   const tabBarBackground = useThemeColor({}, "background")
   const background = useThemeColor({}, "background")
   const textColor = useThemeColor({}, "text")
+  const borderColor = useThemeColor({}, "tabBarBorder")
 
   return (
     <Tabs
       screenOptions={{
+        animation: "fade",
         headerShown: false,
         headerShadowVisible: false,
         headerTitleAlign: "center",
         tabBarStyle: Platform.select({
           ios: {
-            borderTopColor: "transparent",
+            borderTopColor: borderColor,
             position: "absolute",
           },
           default: {
             backgroundColor: tabBarBackground,
-            borderTopColor: "transparent",
+            borderTopColor: borderColor,
           },
         }),
         tabBarButton: (props) => <HapticTab {...props} />,
