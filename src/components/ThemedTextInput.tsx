@@ -3,10 +3,12 @@ import { StyleSheet, TextInput, type TextInputProps } from "react-native"
 
 import { useTheme } from "@/hooks/useTheme"
 
-export type ThemedTextInputProps = TextInputProps
+export type ThemedTextInputProps = TextInputProps & {
+  size?: "sm" | "md" | "lg"
+}
 
 export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
-  ({ style, ...props }, ref) => {
+  ({ style, size = "md", ...props }, ref) => {
     const theme = useTheme()
     const textColor = theme.text
 
@@ -14,6 +16,11 @@ export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
     const placeholderTextColor = theme.icon
     const borderColor = theme.icon
     const selectionColor = theme.tint
+    const fontSizes = {
+      sm: 16,
+      md: 18,
+      lg: 20,
+    }
 
     return (
       <TextInput
@@ -22,7 +29,12 @@ export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
         selectionColor={selectionColor}
         style={[
           styles.input,
-          { color: textColor, backgroundColor, borderColor },
+          {
+            color: textColor,
+            backgroundColor,
+            borderColor,
+            fontSize: fontSizes[size || "md"],
+          },
           style,
         ]}
         {...props}
