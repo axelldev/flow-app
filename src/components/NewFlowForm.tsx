@@ -36,21 +36,13 @@ export function NewFlowForm({ onSubmit }: { onSubmit: (data: Flow) => void }) {
           value={form.title}
           onChangeText={(text) => setForm({ ...form, title: text })}
           placeholder="Title"
-          size="lg"
-          style={{
-            backgroundColor: "transparent",
-          }}
         />
         <ThemedTextInput
           placeholder="Description"
           value={form.description || ""}
           onChangeText={(text) => setForm({ ...form, description: text })}
-          size="lg"
           numberOfLines={3}
           multiline
-          style={{
-            backgroundColor: "transparent",
-          }}
         />
         <IconPicker
           selectedIcon={(form.icon as AvailableIcon) ?? "code-slash"}

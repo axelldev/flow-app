@@ -1,7 +1,6 @@
 import { ThemedText } from "@/components/ThemedText"
 import { AVAILABLE_ICONS, AvailableIcon } from "@/constants/Icons"
 import { useTheme } from "@/hooks/useTheme"
-import { useThemeColor } from "@/hooks/useThemeColor"
 import { colorWithOpacity } from "@/utils/colors"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useEffect, useMemo, useState } from "react"
@@ -23,16 +22,13 @@ interface IconPickerProps {
 export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
   const [showIcons, setShowIcons] = useState(false)
   const theme = useTheme()
+  const backgroundColor = theme.input.background
   const { width } = useWindowDimensions()
   const gridHeight = useSharedValue(0)
   const gridOpacity = useSharedValue(0)
   const [contentHeight, setContentHeight] = useState(0)
   const itemSize = 64
   const numColumns = Math.min(5, Math.max(1, Math.floor(width / itemSize)))
-  const backgroundColor = useThemeColor({
-    light: "#f0f0f0",
-    dark: "#484848",
-  })
 
   useEffect(() => {
     const options = { duration: 200 }
@@ -101,7 +97,7 @@ export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
               color={theme.text}
               size={24}
             />
-            <ThemedText style={styles.titleFlex} type="title">
+            <ThemedText style={styles.titleFlex} type="default">
               Icon
             </ThemedText>
             <Ionicons name="chevron-forward" color={theme.text} size={24} />
@@ -164,6 +160,7 @@ const styles = StyleSheet.create({
   },
   titleFlex: {
     flex: 1,
+    fontSize: 18,
   },
   animatedContainer: {
     overflow: "hidden",

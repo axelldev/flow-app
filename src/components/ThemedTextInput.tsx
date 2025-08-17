@@ -12,14 +12,14 @@ export const ThemedTextInput = forwardRef<TextInput, ThemedTextInputProps>(
     const theme = useTheme()
     const textColor = theme.text
 
-    const backgroundColor = theme.background
-    const placeholderTextColor = theme.icon
-    const borderColor = theme.icon
+    const backgroundColor = theme.input.background
+    const placeholderTextColor = theme.input.placeholder
+    const borderColor = theme.input.border
     const selectionColor = theme.tint
     const fontSizes = {
-      sm: 16,
-      md: 18,
-      lg: 20,
+      sm: 18,
+      md: 20,
+      lg: 28,
     }
 
     return (
