@@ -7,12 +7,12 @@ export function ThemedButton({ disabled, ...props }: PressableProps) {
   return (
     <Pressable
       disabled={disabled}
-      style={[
+      style={({ pressed }) => [
         {
           backgroundColor: theme.primary,
           borderRadius: 8,
           padding: 16,
-          opacity: disabled ? 0.5 : 1,
+          opacity: pressed || disabled ? 0.5 : 1,
         },
       ]}
       {...props}

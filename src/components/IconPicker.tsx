@@ -15,11 +15,16 @@ import {
 import Animated, { useSharedValue, withTiming } from "react-native-reanimated"
 
 interface IconPickerProps {
+  color?: string | null
   selectedIcon?: AvailableIcon
   onIconSelect: (icon: AvailableIcon) => void
 }
 
-export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
+export function IconPicker({
+  selectedIcon,
+  onIconSelect,
+  color,
+}: IconPickerProps) {
   const [showIcons, setShowIcons] = useState(false)
   const theme = useTheme()
   const backgroundColor = theme.input.background
@@ -94,10 +99,10 @@ export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
           >
             <Ionicons
               name={selectedIcon ?? "add-circle"}
-              color={theme.text}
+              color={color ?? theme.text}
               size={24}
             />
-            <ThemedText style={styles.titleFlex} type="default">
+            <ThemedText style={[styles.titleFlex]} type="default">
               Icon
             </ThemedText>
             <Ionicons name="chevron-forward" color={theme.text} size={24} />
@@ -123,7 +128,7 @@ export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
                           opacity: pressed ? 0.5 : 1,
                           backgroundColor:
                             selectedIcon === item
-                              ? colorWithOpacity(theme.primary, 0.2)
+                              ? colorWithOpacity(color ?? theme.primary, 0.2)
                               : "transparent",
                         },
                       ]}
@@ -131,7 +136,9 @@ export function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
                       <Ionicons
                         name={item}
                         color={
-                          selectedIcon === item ? theme.primary : theme.text
+                          selectedIcon === item
+                            ? (color ?? theme.primary)
+                            : theme.text
                         }
                         size={28}
                       />

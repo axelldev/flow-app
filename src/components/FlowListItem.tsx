@@ -38,7 +38,7 @@ export function FlowListItem({ flow, onPress, onLongPress }: Props) {
           <View
             style={{
               marginEnd: 16,
-              backgroundColor: colorWithOpacity(theme.primary, 0.1),
+              backgroundColor: colorWithOpacity(flow.color ?? iconColor, 0.1),
               width: SIZE,
               height: SIZE,
               borderRadius: ROUNDED_SIZE,
@@ -49,7 +49,7 @@ export function FlowListItem({ flow, onPress, onLongPress }: Props) {
             <Ionicons
               size={ICON}
               name={(flow.icon as AvailableIcon) ?? "code-slash"}
-              color={theme.primary}
+              color={flow.color ?? iconColor}
             />
           </View>
           <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
@@ -60,9 +60,11 @@ export function FlowListItem({ flow, onPress, onLongPress }: Props) {
             >
               {flow.title}
             </ThemedText>
-            <ThemedText numberOfLines={2} ellipsizeMode="tail">
-              {flow.description}
-            </ThemedText>
+            {(flow.description?.length || 0) > 1 && (
+              <ThemedText numberOfLines={2} ellipsizeMode="tail">
+                {flow.description}
+              </ThemedText>
+            )}
           </View>
           <View>
             <Ionicons
