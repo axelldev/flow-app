@@ -1,6 +1,7 @@
 import { useDatabase } from "@/components/providers/DatabaseProvider"
 import { schema } from "@/db"
 import { Flow } from "@/db/schema"
+import { eq } from "drizzle-orm"
 import { useLiveQuery } from "drizzle-orm/expo-sqlite"
 import { useCallback } from "react"
 
@@ -17,9 +18,17 @@ export function useFlows() {
     [db],
   )
 
+  const deleteFlow = useCallback(
+    async (id: number) => {
+      return db.delete(schema.flows).where(eq(schema.flows.id, id))
+    },
+    [db],
+  )
+
   return {
     flows,
     error,
     createFlow,
+    deleteFlow,
   }
 }

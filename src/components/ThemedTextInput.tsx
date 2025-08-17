@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 12,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
     fontSize: 16,
   },

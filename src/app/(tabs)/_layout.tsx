@@ -10,7 +10,6 @@ export default function TabsLayout() {
   const tabBarBackground = theme.background
   const background = theme.background
   const textColor = theme.text
-  const borderColor = theme.tabBarBorder
   const primaryColor = theme.primary
 
   return (
@@ -23,12 +22,12 @@ export default function TabsLayout() {
         tabBarActiveTintColor: primaryColor,
         tabBarStyle: Platform.select({
           ios: {
-            borderTopColor: borderColor,
+            borderTopColor: "transparent",
             position: "absolute",
           },
           default: {
             backgroundColor: tabBarBackground,
-            borderTopColor: borderColor,
+            borderTopColor: "transparent",
           },
         }),
         tabBarButton: (props) => <HapticTab {...props} />,

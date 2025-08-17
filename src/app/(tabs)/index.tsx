@@ -5,20 +5,22 @@ import { NewFlowForm } from "@/components/NewFlowForm"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { Flow } from "@/db/schema"
+import { useColorScheme } from "@/hooks/useColorScheme"
 import { useFlows } from "@/hooks/useFlows"
 import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { FlashList } from "@shopify/flash-list"
 import { useState } from "react"
-import { Pressable, View } from "react-native"
+import { ActionSheetIOS, Alert, Platform, Pressable, View } from "react-native"
 import { KeyboardAvoidingView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export default function FlowsScreen() {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
-  const { flows, createFlow } = useFlows()
+  const { flows, createFlow, deleteFlow } = useFlows()
   const [isFormVisible, setFormVisible] = useState(false)
+  const colorScheme = useColorScheme() ?? "light"
   const closeModal = () => setFormVisible(false)
   const openModal = () => setFormVisible(true)
 
@@ -29,6 +31,51 @@ export default function FlowsScreen() {
     } catch (error) {
       console.error("Failed to create flow:", error)
       alert("An error occurred while creating the flow.")
+    }
+  }
+
+  const confirmDelete = async (id: number) => {
+    if (Platform.OS === "ios") {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ["Cancel", "Delete Flow"],
+          destructiveButtonIndex: 1,
+          cancelButtonIndex: 0,
+          title: "Flow options",
+          message: "This will permanently delete the flow and its items.",
+          userInterfaceStyle: colorScheme === "dark" ? "dark" : "light",
+        },
+        async (buttonIndex) => {
+          if (buttonIndex === 1) {
+            try {
+              await deleteFlow(id)
+            } catch (e) {
+              console.error(e)
+              Alert.alert("Delete failed", "Could not delete this flow.")
+            }
+          }
+        },
+      )
+    } else {
+      Alert.alert(
+        "Delete flow?",
+        "This will permanently delete the flow and its items.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: async () => {
+              try {
+                await deleteFlow(id)
+              } catch (e) {
+                console.error(e)
+                Alert.alert("Delete failed", "Could not delete this flow.")
+              }
+            },
+          },
+        ],
+      )
     }
   }
 
@@ -45,7 +92,12 @@ export default function FlowsScreen() {
       </ThemedText>
       <FlashList
         data={flows}
-        renderItem={({ item }) => <FlowListItem flow={item} />}
+        renderItem={({ item }) => (
+          <FlowListItem
+            flow={item}
+            onLongPress={() => item?.id && confirmDelete(item.id)}
+          />
+        )}
         keyExtractor={(item) => item?.id.toString()}
         estimatedItemSize={100}
       />

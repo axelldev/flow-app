@@ -1,17 +1,28 @@
+import { IconPicker } from "@/components/IconPicker"
 import { ThemedButton } from "@/components/ThemedButton"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedTextInput } from "@/components/ThemedTextInput"
+import { AvailableIcon } from "@/constants/Icons"
 import { Flow } from "@/db/schema"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { View } from "react-native"
 
 const initialValues: Flow = {
   title: "",
   description: "",
+  icon: "code-slash",
 }
 
 export function NewFlowForm({ onSubmit }: { onSubmit: (data: Flow) => void }) {
   const [form, setForm] = useState<Flow>(initialValues)
+
+  const isValid = useMemo(() => {
+    if (form.title.trim() === "") {
+      return false
+    }
+
+    return true
+  }, [form.title])
 
   const handleSubmit = () => {
     onSubmit(form)
@@ -41,19 +52,24 @@ export function NewFlowForm({ onSubmit }: { onSubmit: (data: Flow) => void }) {
             backgroundColor: "transparent",
           }}
         />
-        {/* <ThemedText>Color</ThemedText>
-            <ThemedText>Icon</ThemedText> */}
+        <IconPicker
+          selectedIcon={(form.icon as AvailableIcon) ?? "code-slash"}
+          onIconSelect={(icon) => {
+            setForm({ ...form, icon })
+          }}
+        />
       </View>
-      <ThemedButton onPress={handleSubmit}>
+      <ThemedButton disabled={!isValid} onPress={handleSubmit}>
         <ThemedText
           style={{
             color: "#000",
             fontSize: 16,
             fontWeight: "bold",
             textAlign: "center",
+            opacity: isValid ? 1 : 0.5,
           }}
         >
-          Create
+          Save
         </ThemedText>
       </ThemedButton>
     </View>
