@@ -16,7 +16,7 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         animation: "fade",
-        headerShown: false,
+        headerShown: true,
         headerShadowVisible: false,
         headerTitleAlign: "center",
         tabBarActiveTintColor: primaryColor,
@@ -46,7 +46,6 @@ export default function TabsLayout() {
           tabBarLabel: "Flows",
           headerTitle: "Flows",
           headerTitleAlign: "left",
-          headerBackgroundContainerStyle: {},
           headerTitleStyle: {
             fontSize: 36,
             color: textColor,

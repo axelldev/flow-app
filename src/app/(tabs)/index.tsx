@@ -82,16 +82,7 @@ export default function FlowsScreen() {
   }
 
   return (
-    <ThemedView safeArea style={{ flex: 1 }}>
-      <ThemedText
-        type="navTitle"
-        style={{
-          paddingHorizontal: 8,
-          paddingVertical: 16,
-        }}
-      >
-        Flows
-      </ThemedText>
+    <ThemedView safeArea edges={["bottom"]} style={{ flex: 1 }}>
       <FlashList
         data={flows}
         contentContainerStyle={{ paddingBottom: tabBarHeight }}
