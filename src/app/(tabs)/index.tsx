@@ -1,4 +1,5 @@
 import { BottomSheet } from "@/components/BottomSheet"
+import { FlowEmptyList } from "@/components/FlowEmptyList"
 import { FlowForm } from "@/components/FlowForm"
 import { FlowListItem } from "@/components/FlowListItem"
 import { NewFlowButton } from "@/components/NewFlowButton"
@@ -61,82 +62,85 @@ export default function FlowsScreen() {
       }
       closeModal()
     } catch (error) {
-      console.log("Failed to save flow:", error)
+      console.error("Failed to save flow:", error)
       alert("An error occurred while saving the flow.")
     }
   }
 
   return (
     <ThemedView safeArea edges={["bottom", "top"]} style={{ flex: 1 }}>
-      <FlashList
-        data={flows}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: tabBarHeight,
-          paddingTop: headerHeight + 16,
-        }}
-        renderItem={({ item }) => {
-          let tempRef: ComponentRef<typeof Swipeable> | null = null
-          return (
-            <Swipeable
-              ref={(ref) => {
-                tempRef = ref
-              }}
-              onSwipeableWillOpen={() => {
-                if (openedRef.current && openedRef.current !== tempRef) {
-                  openedRef.current.close()
-                }
-                openedRef.current = tempRef
-              }}
-              renderRightActions={() => (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingRight: 8,
-                    gap: 8,
-                  }}
-                >
-                  <Pressable
-                    style={({ pressed }) => ({
-                      width: 56,
-                      height: 56,
+      {flows.length === 0 && <FlowEmptyList onPressCreate={openModal} />}
+      {flows.length > 0 && (
+        <FlashList
+          data={flows}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: tabBarHeight,
+            paddingTop: headerHeight + 16,
+          }}
+          renderItem={({ item }) => {
+            let tempRef: ComponentRef<typeof Swipeable> | null = null
+            return (
+              <Swipeable
+                ref={(ref) => {
+                  tempRef = ref
+                }}
+                onSwipeableWillOpen={() => {
+                  if (openedRef.current && openedRef.current !== tempRef) {
+                    openedRef.current.close()
+                  }
+                  openedRef.current = tempRef
+                }}
+                renderRightActions={() => (
+                  <View
+                    style={{
+                      flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
-                      backgroundColor: "#FF4141",
-                      borderRadius: 28,
-                      opacity: pressed ? 0.5 : 1,
-                    })}
-                    onPress={() => handleDelete(item.id)}
+                      paddingRight: 8,
+                      gap: 8,
+                    }}
                   >
-                    <Ionicons name="trash-outline" size={28} color="white" />
-                  </Pressable>
+                    <Pressable
+                      style={({ pressed }) => ({
+                        width: 56,
+                        height: 56,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#FF4141",
+                        borderRadius: 28,
+                        opacity: pressed ? 0.5 : 1,
+                      })}
+                      onPress={() => handleDelete(item.id)}
+                    >
+                      <Ionicons name="trash-outline" size={28} color="white" />
+                    </Pressable>
 
-                  <Pressable
-                    style={({ pressed }) => ({
-                      width: 56,
-                      height: 56,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: "#FF9D41",
-                      borderRadius: 28,
-                      opacity: pressed ? 0.5 : 1,
-                    })}
-                    onPress={() => handleEdit(item)}
-                  >
-                    <Ionicons name="pencil-outline" size={28} color="white" />
-                  </Pressable>
-                </View>
-              )}
-            >
-              <FlowListItem flow={item} onLongPress={console.log} />
-            </Swipeable>
-          )
-        }}
-        keyExtractor={(item) => item?.id.toString()}
-        estimatedItemSize={100}
-      />
+                    <Pressable
+                      style={({ pressed }) => ({
+                        width: 56,
+                        height: 56,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "#FF9D41",
+                        borderRadius: 28,
+                        opacity: pressed ? 0.5 : 1,
+                      })}
+                      onPress={() => handleEdit(item)}
+                    >
+                      <Ionicons name="pencil-outline" size={28} color="white" />
+                    </Pressable>
+                  </View>
+                )}
+              >
+                <FlowListItem flow={item} onLongPress={console.log} />
+              </Swipeable>
+            )
+          }}
+          keyExtractor={(item) => item?.id.toString()}
+          estimatedItemSize={100}
+        />
+      )}
       <NewFlowButton onPress={openModal} />
       <BottomSheet
         visible={isFormVisible}
