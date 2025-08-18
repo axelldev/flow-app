@@ -6,7 +6,7 @@ import { ThemedTextInput } from "@/components/ThemedTextInput"
 import { flowItemColors } from "@/constants/Colors"
 import { AvailableIcon } from "@/constants/Icons"
 import { Flow } from "@/db/schema"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { View } from "react-native"
 
 const initialValues: Flow = {
@@ -16,8 +16,21 @@ const initialValues: Flow = {
   color: flowItemColors[0],
 }
 
-export function NewFlowForm({ onSubmit }: { onSubmit: (data: Flow) => void }) {
+export interface FlowFormProps {
+  editinglow?: Flow
+  onSubmit: (data: Flow) => void
+}
+
+export function FlowForm({ editinglow, onSubmit }: FlowFormProps) {
   const [form, setForm] = useState<Flow>(initialValues)
+
+  useEffect(() => {
+    if (editinglow) {
+      setForm(editinglow)
+    } else {
+      setForm(initialValues)
+    }
+  }, [editinglow])
 
   const isValid = useMemo(() => {
     if (form.title.trim() === "") {

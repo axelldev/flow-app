@@ -1,11 +1,10 @@
 import { BottomSheet } from "@/components/BottomSheet"
+import { FlowForm } from "@/components/FlowForm"
 import { FlowListItem } from "@/components/FlowListItem"
 import { NewFlowButton } from "@/components/NewFlowButton"
-import { NewFlowForm } from "@/components/NewFlowForm"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { Flow } from "@/db/schema"
-import { useColorScheme } from "@/hooks/useColorScheme"
 import { useFlows } from "@/hooks/useFlows"
 import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
@@ -13,7 +12,8 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { useHeaderHeight } from "@react-navigation/elements"
 import { FlashList } from "@shopify/flash-list"
 import { useState } from "react"
-import { ActionSheetIOS, Alert, Platform, Pressable, View } from "react-native"
+import { Alert, Pressable, StyleSheet, View } from "react-native"
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable"
 import { KeyboardAvoidingView } from "react-native-keyboard-controller"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -22,64 +22,41 @@ export default function FlowsScreen() {
   const insets = useSafeAreaInsets()
   const tabBarHeight = useBottomTabBarHeight()
   const headerHeight = useHeaderHeight()
-  const { flows, createFlow, deleteFlow } = useFlows()
+  const { flows, createFlow, deleteFlow, updateFlow } = useFlows()
+  const [editingFlow, setEditingFlow] = useState<Flow | undefined>(undefined)
   const [isFormVisible, setFormVisible] = useState(false)
-  const colorScheme = useColorScheme() ?? "light"
   const closeModal = () => setFormVisible(false)
   const openModal = () => setFormVisible(true)
 
-  const onSubmit = async (data: Flow) => {
-    try {
-      createFlow(data)
-      closeModal()
-    } catch (error) {
-      console.error("Failed to create flow:", error)
-      alert("An error occurred while creating the flow.")
-    }
+  const handleDelete = (id: number) => {
+    Alert.alert(
+      "Delete flow",
+      "Are you sure you want to delete this item?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Delete", style: "destructive", onPress: () => deleteFlow(id) },
+      ],
+      { cancelable: true },
+    )
   }
 
-  const confirmDelete = async (id: number) => {
-    if (Platform.OS === "ios") {
-      ActionSheetIOS.showActionSheetWithOptions(
-        {
-          options: ["Cancel", "Delete Flow"],
-          destructiveButtonIndex: 1,
-          cancelButtonIndex: 0,
-          title: "Flow options",
-          message: "This will permanently delete the flow and its items.",
-          userInterfaceStyle: colorScheme === "dark" ? "dark" : "light",
-        },
-        async (buttonIndex) => {
-          if (buttonIndex === 1) {
-            try {
-              await deleteFlow(id)
-            } catch (e) {
-              console.error(e)
-              Alert.alert("Delete failed", "Could not delete this flow.")
-            }
-          }
-        },
-      )
-    } else {
-      Alert.alert(
-        "Delete flow?",
-        "This will permanently delete the flow and its items.",
-        [
-          { text: "Cancel", style: "cancel" },
-          {
-            text: "Delete",
-            style: "destructive",
-            onPress: async () => {
-              try {
-                await deleteFlow(id)
-              } catch (e) {
-                console.error(e)
-                Alert.alert("Delete failed", "Could not delete this flow.")
-              }
-            },
-          },
-        ],
-      )
+  const handleEdit = (flow: Flow) => {
+    setEditingFlow(flow)
+    openModal()
+  }
+
+  const onSubmit = async (data: Flow) => {
+    try {
+      if (editingFlow) {
+        await updateFlow({ ...editingFlow, ...data })
+        setEditingFlow(undefined)
+      } else {
+        await createFlow(data)
+      }
+      closeModal()
+    } catch (error) {
+      console.log("Failed to save flow:", error)
+      alert("An error occurred while saving the flow.")
     }
   }
 
@@ -93,32 +70,75 @@ export default function FlowsScreen() {
           paddingTop: headerHeight + 16,
         }}
         renderItem={({ item }) => (
-          <FlowListItem
-            flow={item}
-            onLongPress={() => item?.id && confirmDelete(item.id)}
-          />
+          <Swipeable
+            renderRightActions={() => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingRight: 8,
+                  gap: 8,
+                }}
+              >
+                <Pressable
+                  style={({ pressed }) => ({
+                    width: 56,
+                    height: 56,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#FF4141",
+                    borderRadius: 28,
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Ionicons name="trash-outline" size={28} color="white" />
+                </Pressable>
+
+                <Pressable
+                  style={({ pressed }) => ({
+                    width: 56,
+                    height: 56,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: "#FF9D41",
+                    borderRadius: 28,
+                    opacity: pressed ? 0.5 : 1,
+                  })}
+                  onPress={() => handleEdit(item)}
+                >
+                  <Ionicons name="pencil-outline" size={28} color="white" />
+                </Pressable>
+              </View>
+            )}
+          >
+            <FlowListItem flow={item} onLongPress={console.log} />
+          </Swipeable>
         )}
         keyExtractor={(item) => item?.id.toString()}
         estimatedItemSize={100}
       />
       <NewFlowButton onPress={openModal} />
-      <BottomSheet visible={isFormVisible} onDismiss={closeModal}>
+      <BottomSheet
+        visible={isFormVisible}
+        onDismiss={() => {
+          setEditingFlow(undefined)
+          closeModal()
+        }}
+      >
         <KeyboardAvoidingView
           behavior="padding"
           keyboardVerticalOffset={60}
           style={{ flex: 1 }}
         >
           <View
-            style={{ flex: 1, padding: 16, paddingBottom: 16 + insets.bottom }}
+            style={[
+              styles.bottomSheetContainer,
+              { paddingBottom: insets.bottom + 16 },
+            ]}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginBottom: 16,
-                justifyContent: "space-between",
-              }}
-            >
+            <View style={styles.formContainer}>
               <ThemedText type="title">Create Flow</ThemedText>
               <Pressable onPress={closeModal}>
                 {({ pressed }) => (
@@ -131,10 +151,23 @@ export default function FlowsScreen() {
                 )}
               </Pressable>
             </View>
-            <NewFlowForm onSubmit={onSubmit} />
+            <FlowForm editinglow={editingFlow} onSubmit={onSubmit} />
           </View>
         </KeyboardAvoidingView>
       </BottomSheet>
     </ThemedView>
   )
 }
+
+const styles = StyleSheet.create({
+  bottomSheetContainer: {
+    flex: 1,
+    padding: 16,
+  },
+  formContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+    justifyContent: "space-between",
+  },
+})

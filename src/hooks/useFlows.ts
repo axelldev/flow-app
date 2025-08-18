@@ -25,10 +25,22 @@ export function useFlows() {
     [db],
   )
 
+  const updateFlow = useCallback(
+    async (flow: Flow) => {
+      if (!flow.id) return
+      return db
+        .update(schema.flows)
+        .set(flow)
+        .where(eq(schema.flows.id, flow.id))
+    },
+    [db],
+  )
+
   return {
     flows,
     error,
     createFlow,
+    updateFlow,
     deleteFlow,
   }
 }
