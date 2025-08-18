@@ -8,6 +8,7 @@ import { AvailableIcon } from "@/constants/Icons"
 import { Flow } from "@/db/schema"
 import { useEffect, useMemo, useState } from "react"
 import { View } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 
 const initialValues: Flow = {
   title: "",
@@ -47,31 +48,33 @@ export function FlowForm({ editinglow, onSubmit }: FlowFormProps) {
 
   return (
     <View style={{ flex: 1, justifyContent: "space-between", gap: 8 }}>
-      <View style={{ flex: 1, gap: 16 }}>
-        <ThemedTextInput
-          value={form.title}
-          onChangeText={(text) => setForm({ ...form, title: text })}
-          placeholder="Title"
-        />
-        <ThemedTextInput
-          placeholder="Description"
-          value={form.description || ""}
-          onChangeText={(text) => setForm({ ...form, description: text })}
-          numberOfLines={3}
-          multiline
-        />
-        <ColorPicker
-          selectedColor={form.color ?? flowItemColors[0]}
-          onColorSelect={(color) => setForm({ ...form, color })}
-        />
-        <IconPicker
-          color={form.color}
-          selectedIcon={(form.icon as AvailableIcon) ?? "code-slash"}
-          onIconSelect={(icon) => {
-            setForm({ ...form, icon })
-          }}
-        />
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ flex: 1, gap: 16, paddingBottom: 16 }}>
+          <ThemedTextInput
+            value={form.title}
+            onChangeText={(text) => setForm({ ...form, title: text })}
+            placeholder="Title"
+          />
+          <ThemedTextInput
+            placeholder="Description"
+            value={form.description || ""}
+            onChangeText={(text) => setForm({ ...form, description: text })}
+            numberOfLines={3}
+            multiline
+          />
+          <ColorPicker
+            selectedColor={form.color ?? flowItemColors[0]}
+            onColorSelect={(color) => setForm({ ...form, color })}
+          />
+          <IconPicker
+            color={form.color}
+            selectedIcon={(form.icon as AvailableIcon) ?? "code-slash"}
+            onIconSelect={(icon) => {
+              setForm({ ...form, icon })
+            }}
+          />
+        </View>
+      </ScrollView>
       <ThemedButton disabled={!isValid} onPress={handleSubmit}>
         <ThemedText
           style={{
