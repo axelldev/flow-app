@@ -10,6 +10,7 @@ import { useFlows } from "@/hooks/useFlows"
 import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
+import { useHeaderHeight } from "@react-navigation/elements"
 import { FlashList } from "@shopify/flash-list"
 import { useState } from "react"
 import { ActionSheetIOS, Alert, Platform, Pressable, View } from "react-native"
@@ -20,6 +21,7 @@ export default function FlowsScreen() {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
   const tabBarHeight = useBottomTabBarHeight()
+  const headerHeight = useHeaderHeight()
   const { flows, createFlow, deleteFlow } = useFlows()
   const [isFormVisible, setFormVisible] = useState(false)
   const colorScheme = useColorScheme() ?? "light"
@@ -82,10 +84,14 @@ export default function FlowsScreen() {
   }
 
   return (
-    <ThemedView safeArea edges={["bottom"]} style={{ flex: 1 }}>
+    <ThemedView safeArea edges={["bottom", "top"]} style={{ flex: 1 }}>
       <FlashList
         data={flows}
-        contentContainerStyle={{ paddingBottom: tabBarHeight }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: tabBarHeight,
+          paddingTop: headerHeight + 16,
+        }}
         renderItem={({ item }) => (
           <FlowListItem
             flow={item}

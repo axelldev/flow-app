@@ -16,8 +16,9 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         animation: "fade",
-        headerShown: true,
+        headerShown: false,
         headerShadowVisible: false,
+        headerTransparent: true,
         headerTitleAlign: "center",
         tabBarActiveTintColor: primaryColor,
         tabBarStyle: Platform.select({
@@ -46,10 +47,6 @@ export default function TabsLayout() {
           tabBarLabel: "Flows",
           headerTitle: "Flows",
           headerTitleAlign: "left",
-          headerTitleStyle: {
-            fontSize: 36,
-            color: textColor,
-          },
           tabBarIcon: (props) => <Ionicons name="home" {...props} />,
         }}
       />
