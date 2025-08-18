@@ -11,7 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { useHeaderHeight } from "@react-navigation/elements"
 import { FlashList } from "@shopify/flash-list"
-import { useState } from "react"
+import { ComponentRef, useRef, useState } from "react"
 import { Alert, Pressable, StyleSheet, View } from "react-native"
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable"
 import { KeyboardAvoidingView } from "react-native-keyboard-controller"
@@ -25,8 +25,14 @@ export default function FlowsScreen() {
   const { flows, createFlow, deleteFlow, updateFlow } = useFlows()
   const [editingFlow, setEditingFlow] = useState<Flow | undefined>(undefined)
   const [isFormVisible, setFormVisible] = useState(false)
-  const closeModal = () => setFormVisible(false)
-  const openModal = () => setFormVisible(true)
+  const openedRef = useRef<ComponentRef<typeof Swipeable> | null>(null)
+  const closeModal = () => {
+    setFormVisible(false)
+  }
+  const openModal = () => {
+    openedRef.current?.close()
+    setFormVisible(true)
+  }
 
   const handleDelete = (id: number) => {
     Alert.alert(
@@ -69,53 +75,65 @@ export default function FlowsScreen() {
           paddingBottom: tabBarHeight,
           paddingTop: headerHeight + 16,
         }}
-        renderItem={({ item }) => (
-          <Swipeable
-            renderRightActions={() => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  paddingRight: 8,
-                  gap: 8,
-                }}
-              >
-                <Pressable
-                  style={({ pressed }) => ({
-                    width: 56,
-                    height: 56,
+        renderItem={({ item }) => {
+          let tempRef: ComponentRef<typeof Swipeable> | null = null
+          return (
+            <Swipeable
+              ref={(ref) => {
+                tempRef = ref
+              }}
+              onSwipeableWillOpen={() => {
+                if (openedRef.current && openedRef.current !== tempRef) {
+                  openedRef.current.close()
+                }
+                openedRef.current = tempRef
+              }}
+              renderRightActions={() => (
+                <View
+                  style={{
+                    flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#FF4141",
-                    borderRadius: 28,
-                    opacity: pressed ? 0.5 : 1,
-                  })}
-                  onPress={() => handleDelete(item.id)}
+                    paddingRight: 8,
+                    gap: 8,
+                  }}
                 >
-                  <Ionicons name="trash-outline" size={28} color="white" />
-                </Pressable>
+                  <Pressable
+                    style={({ pressed }) => ({
+                      width: 56,
+                      height: 56,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#FF4141",
+                      borderRadius: 28,
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                    onPress={() => handleDelete(item.id)}
+                  >
+                    <Ionicons name="trash-outline" size={28} color="white" />
+                  </Pressable>
 
-                <Pressable
-                  style={({ pressed }) => ({
-                    width: 56,
-                    height: 56,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    backgroundColor: "#FF9D41",
-                    borderRadius: 28,
-                    opacity: pressed ? 0.5 : 1,
-                  })}
-                  onPress={() => handleEdit(item)}
-                >
-                  <Ionicons name="pencil-outline" size={28} color="white" />
-                </Pressable>
-              </View>
-            )}
-          >
-            <FlowListItem flow={item} onLongPress={console.log} />
-          </Swipeable>
-        )}
+                  <Pressable
+                    style={({ pressed }) => ({
+                      width: 56,
+                      height: 56,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: "#FF9D41",
+                      borderRadius: 28,
+                      opacity: pressed ? 0.5 : 1,
+                    })}
+                    onPress={() => handleEdit(item)}
+                  >
+                    <Ionicons name="pencil-outline" size={28} color="white" />
+                  </Pressable>
+                </View>
+              )}
+            >
+              <FlowListItem flow={item} onLongPress={console.log} />
+            </Swipeable>
+          )
+        }}
         keyExtractor={(item) => item?.id.toString()}
         estimatedItemSize={100}
       />
