@@ -1,7 +1,6 @@
 import type Ionicons from "@expo/vector-icons/Ionicons"
-import type { ComponentProps } from "react"
 
-export type IconName = ComponentProps<typeof Ionicons>["name"]
+export type IconName = keyof typeof Ionicons.glyphMap
 
 export type AvailableIcon = (typeof AVAILABLE_ICONS)[number]
 
