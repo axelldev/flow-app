@@ -3,6 +3,7 @@ import { FlowEmptyList } from "@/components/FlowEmptyList"
 import { FlowForm } from "@/components/FlowForm"
 import { FlowListItem } from "@/components/FlowListItem"
 import { NewFlowButton } from "@/components/NewFlowButton"
+import { SwipeAction } from "@/components/SwipeAction"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
 import { Flow } from "@/db/schema"
@@ -101,35 +102,19 @@ export default function FlowsScreen() {
                       gap: 8,
                     }}
                   >
-                    <Pressable
-                      style={({ pressed }) => ({
-                        width: 56,
-                        height: 56,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#FF4141",
-                        borderRadius: 28,
-                        opacity: pressed ? 0.5 : 1,
-                      })}
+                    <SwipeAction
+                      backgroundColor="#FF4141"
+                      foregroundColor="#fff"
+                      icon="trash-outline"
                       onPress={() => handleDelete(item.id)}
-                    >
-                      <Ionicons name="trash-outline" size={28} color="white" />
-                    </Pressable>
+                    />
 
-                    <Pressable
-                      style={({ pressed }) => ({
-                        width: 56,
-                        height: 56,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "#FF9D41",
-                        borderRadius: 28,
-                        opacity: pressed ? 0.5 : 1,
-                      })}
+                    <SwipeAction
+                      backgroundColor="#FF9D41"
+                      foregroundColor="#fff"
+                      icon="pencil-outline"
                       onPress={() => handleEdit(item)}
-                    >
-                      <Ionicons name="pencil-outline" size={28} color="white" />
-                    </Pressable>
+                    />
                   </View>
                 )}
               >
