@@ -11,7 +11,6 @@ import { useFlows } from "@/hooks/useFlows"
 import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
-import { useHeaderHeight } from "@react-navigation/elements"
 import { FlashList } from "@shopify/flash-list"
 import { Link } from "expo-router"
 import { ComponentRef, useRef, useState } from "react"
@@ -24,7 +23,6 @@ export default function FlowsScreen() {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
   const tabBarHeight = useBottomTabBarHeight()
-  const headerHeight = useHeaderHeight()
   const { flows, createFlow, deleteFlow, updateFlow } = useFlows()
   const [editingFlow, setEditingFlow] = useState<Flow | undefined>(undefined)
   const [isFormVisible, setFormVisible] = useState(false)
@@ -70,7 +68,7 @@ export default function FlowsScreen() {
   }
 
   return (
-    <ThemedView safeArea edges={["bottom", "top"]} style={{ flex: 1 }}>
+    <ThemedView safeArea edges={["bottom"]} style={{ flex: 1 }}>
       {flows.length === 0 && <FlowEmptyList onPressCreate={openModal} />}
       {flows.length > 0 && (
         <FlashList
@@ -78,7 +76,7 @@ export default function FlowsScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingBottom: tabBarHeight,
-            paddingTop: headerHeight + 16,
+            paddingTop: insets.top,
           }}
           renderItem={({ item }) => {
             let tempRef: ComponentRef<typeof Swipeable> | null = null
@@ -129,7 +127,12 @@ export default function FlowsScreen() {
           estimatedItemSize={100}
         />
       )}
-      <FloatingButton onPress={openModal} />
+      <FloatingButton
+        icon="add"
+        backgroundColor={theme.primary}
+        foregroundColor={theme.background}
+        onPress={openModal}
+      />
       <BottomSheet
         visible={isFormVisible}
         onDismiss={() => {

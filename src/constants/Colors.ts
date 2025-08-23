@@ -1,7 +1,7 @@
 export const tintColorLight = "#393939"
 export const tintColorDark = "#fff"
-export const primaryColorLight = "#1FCB81"
-export const primaryColorDark = "#6AEEBB"
+export const primaryColorLight = "#3295EB"
+export const primaryColorDark = "#3295EB"
 
 export interface BaseTheme {
   text: string

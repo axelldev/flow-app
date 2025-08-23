@@ -1,9 +1,11 @@
-import { useTheme } from "@/hooks/useTheme"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { GestureResponderEvent, Pressable, View } from "react-native"
 
 export type FloatingButtonProps = {
+  backgroundColor: string
+  foregroundColor: string
+  icon: keyof typeof Ionicons.glyphMap
   onPress: (e: GestureResponderEvent) => void
 }
 
@@ -11,9 +13,13 @@ const SIZE = 56
 const PADDING = 8
 const BORDER_RADIUS = SIZE + (PADDING * 2) / 3
 
-export function FloatingButton({ onPress }: FloatingButtonProps) {
+export function FloatingButton({
+  foregroundColor,
+  backgroundColor,
+  icon,
+  onPress,
+}: FloatingButtonProps) {
   const bottomTabBarHeight = useBottomTabBarHeight()
-  const backgroundColor = useTheme().primary
 
   return (
     <Pressable
@@ -39,7 +45,7 @@ export function FloatingButton({ onPress }: FloatingButtonProps) {
             justifyContent: "center",
           }}
         >
-          <Ionicons name="add" size={34} color={"#393939"} />
+          <Ionicons name={icon} size={34} color={foregroundColor} />
         </View>
       )}
     </Pressable>
