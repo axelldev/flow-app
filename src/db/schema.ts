@@ -22,8 +22,7 @@ export const flowItems = sqliteTable("flow_items", {
     .references(() => flows.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   description: text("description").notNull(),
-  icon: text("icon"),
-  color: text("color"),
+  priority: integer("priority").notNull().default(0),
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(false),
   isDone: integer("is_done", { mode: "boolean" }).notNull().default(false),
   // Timer State
