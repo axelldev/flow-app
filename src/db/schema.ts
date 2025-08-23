@@ -38,3 +38,4 @@ export const flowItems = sqliteTable("flow_items", {
 })
 
 export type Flow = typeof flows.$inferInsert
+export type FlowItem = typeof flowItems.$inferInsert

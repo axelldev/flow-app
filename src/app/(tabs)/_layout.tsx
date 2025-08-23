@@ -42,12 +42,18 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(flows)"
         options={{
           tabBarLabel: "Flows",
           headerTitle: "Flows",
           headerTitleAlign: "left",
           tabBarIcon: (props) => <Ionicons name="home" {...props} />,
+        }}
+      />
+      <Tabs.Screen
+        name="(flows)/detail/[id]"
+        options={{
+          href: null,
         }}
       />
       <Tabs.Screen

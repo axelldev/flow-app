@@ -13,6 +13,7 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { useHeaderHeight } from "@react-navigation/elements"
 import { FlashList } from "@shopify/flash-list"
+import { Link } from "expo-router"
 import { ComponentRef, useRef, useState } from "react"
 import { Alert, Pressable, StyleSheet, View } from "react-native"
 import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable"
@@ -118,7 +119,9 @@ export default function FlowsScreen() {
                   </View>
                 )}
               >
-                <FlowListItem flow={item} onLongPress={console.log} />
+                <Link href={`/(tabs)/(flows)/detail/${item.id}`} asChild>
+                  <FlowListItem flow={item} onLongPress={console.log} />
+                </Link>
               </Swipeable>
             )
           }}
