@@ -51,12 +51,6 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="(flows)/detail/[id]"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
         name="settings"
         options={{
           headerTitle: "Settings",

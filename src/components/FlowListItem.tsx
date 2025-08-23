@@ -1,9 +1,9 @@
+import { CircularIcon } from "@/components/CircularIcon"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
-import { AvailableIcon } from "@/constants/Icons"
+import { IconName } from "@/constants/Icons"
 import { Flow } from "@/db/schema"
 import { useTheme } from "@/hooks/useTheme"
-import { colorWithOpacity } from "@/utils/colors"
 import Ionicons from "@expo/vector-icons/Ionicons"
 import { Pressable, StyleSheet, View } from "react-native"
 
@@ -12,11 +12,6 @@ type Props = {
   onPress?: () => void
   onLongPress?: () => void
 }
-
-const ICON = 28
-const PADDING = 8
-const SIZE = ICON + PADDING * 2
-const ROUNDED_SIZE = SIZE / 2
 
 export function FlowListItem({ flow, onPress, onLongPress }: Props) {
   const theme = useTheme()
@@ -35,23 +30,10 @@ export function FlowListItem({ flow, onPress, onLongPress }: Props) {
             },
           ]}
         >
-          <View
-            style={{
-              marginEnd: 16,
-              backgroundColor: colorWithOpacity(flow.color ?? iconColor, 0.1),
-              width: SIZE,
-              height: SIZE,
-              borderRadius: ROUNDED_SIZE,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Ionicons
-              size={ICON}
-              name={(flow.icon as AvailableIcon) ?? "code-slash"}
-              color={flow.color ?? iconColor}
-            />
-          </View>
+          <CircularIcon
+            icon={(flow.icon as IconName) ?? "code-slash"}
+            color={flow.color ?? iconColor}
+          />
           <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
             <ThemedText
               style={[styles.title, { fontSize: 24 }]}
