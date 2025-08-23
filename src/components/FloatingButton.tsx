@@ -3,11 +3,15 @@ import Ionicons from "@expo/vector-icons/Ionicons"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { GestureResponderEvent, Pressable, View } from "react-native"
 
-export function NewFlowButton({
-  onPress,
-}: {
+export type FloatingButtonProps = {
   onPress: (e: GestureResponderEvent) => void
-}) {
+}
+
+const SIZE = 56
+const PADDING = 8
+const BORDER_RADIUS = SIZE + (PADDING * 2) / 3
+
+export function FloatingButton({ onPress }: FloatingButtonProps) {
   const bottomTabBarHeight = useBottomTabBarHeight()
   const backgroundColor = useTheme().primary
 
@@ -25,11 +29,11 @@ export function NewFlowButton({
       {({ pressed }) => (
         <View
           style={{
-            width: 56,
-            height: 56,
-            padding: 8,
+            width: SIZE,
+            height: SIZE,
+            padding: PADDING,
             opacity: pressed ? 0.5 : 1,
-            borderRadius: "100%",
+            borderRadius: BORDER_RADIUS,
             backgroundColor: backgroundColor,
             alignItems: "center",
             justifyContent: "center",

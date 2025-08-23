@@ -1,8 +1,8 @@
 import { BottomSheet } from "@/components/BottomSheet"
+import { FloatingButton } from "@/components/FloatingButton"
 import { FlowEmptyList } from "@/components/FlowEmptyList"
 import { FlowForm } from "@/components/FlowForm"
 import { FlowListItem } from "@/components/FlowListItem"
-import { NewFlowButton } from "@/components/NewFlowButton"
 import { SwipeAction } from "@/components/SwipeAction"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
@@ -129,7 +129,7 @@ export default function FlowsScreen() {
           estimatedItemSize={100}
         />
       )}
-      <NewFlowButton onPress={openModal} />
+      <FloatingButton onPress={openModal} />
       <BottomSheet
         visible={isFormVisible}
         onDismiss={() => {
